@@ -18,9 +18,9 @@
 #include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h> //provides the ability to parse and construct JSON objects
 
-const char* ssid = "APT301";                          // Constant variable for SSID 
-const char* pass = "dslrapt301";                      // Constant variable for password for SSID
-const char* key = "caaa012260600520cacdd6dc03229830";   // Personal API key for accurate Geolocation tracking of IP addresses
+const char* ssid = "";                          // Constant variable for SSID 
+const char* pass = "";                      // Constant variable for password for SSID
+const char* key = "";   // Personal API key for accurate Geolocation tracking of IP addresses
                                                         // API key from ipstack
                                                         
 /*  here we create a new data type definition, a box to hold other data types
