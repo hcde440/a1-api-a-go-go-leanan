@@ -1,4 +1,3 @@
-#include <ESP8266HTTPClient.h>
 
 /*A sketch to get the ESP8266 on the network and connect to some open services via HTTP to
  * get our external IP address and (approximate) geolocative information in the getGeo()
@@ -87,13 +86,20 @@ void setup() {
   Serial.println(" in or near " + location.cy + ", " + location.rc + ".");
   Serial.println("and located at (roughly) ");
   Serial.println(location.lt + " latitude by " + location.ln + " longitude.");
+  Serial.println();
 
+
+/*  The next five lines prints out sentences that use the 
+ *  data stored in the variables that are used in the getActivity
+ *  method so that they can be read and understood in context.
+ */
+ 
   getActivity();
   Serial.println("Bored and don't have ideas about what to do today?");
   Serial.println("Here's something you can do: " + activity.act);
   Serial.println(activity.act + " is an/a " + activity.at + " type of activity");
   Serial.println("The number of participants typically required is: " + activity.ps + " and usually costs $" + activity.pr); 
-  
+  Serial.println();
 
 }
 
@@ -173,7 +179,7 @@ void getGeo() {
 void getActivity(){
   HTTPClient theClient;
   Serial.println("Making HTTP request");
-  theClient.begin("https://www.boredapi.com/api/activity"); 
+  theClient.begin("http://www.boredapi.com/api/activity"); 
   int httpCode = theClient.GET();
 
   if (httpCode > 0) {
@@ -191,7 +197,6 @@ void getActivity(){
         Serial.println(payload);
         return;
       }
-
 
        activity.act = root["activity"].as<String>();
        activity.acc = root["accessibility"].as<String>();
