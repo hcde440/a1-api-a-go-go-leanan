@@ -20,8 +20,9 @@
 
 const char* ssid = "APT301";                          // Constant variable for SSID 
 const char* pass = "dslrapt301";                      // Constant variable for password for SSID
-const char* key = "";   // Personal API key for accurate Geolocation tracking of IP addresses
-
+const char* key = "caaa012260600520cacdd6dc03229830";   // Personal API key for accurate Geolocation tracking of IP addresses
+                                                        // API key from ipstack
+                                                        
 /*  here we create a new data type definition, a box to hold other data types
  *  for each name:value pair coming in from the service, we will create a slot
  *  in our structure to hold our data
@@ -80,7 +81,8 @@ void setup() {
  *  data stored in the variables that are used in the getGeo and getIP
  *  methods so that they can be read and understood in context.
  */
- 
+
+  Serial.println("-------------------------------------------");
   Serial.println("Your external IP address is " + location.ip);
   Serial.print("Your ESP is currently in " + location.cn + " (" + location.cc + "),");
   Serial.println(" in or near " + location.cy + ", " + location.rc + ".");
@@ -95,6 +97,7 @@ void setup() {
  */
  
   getActivity();
+  Serial.println("-------------------------------------------");
   Serial.println("Bored and don't have ideas about what to do today?");
   Serial.println("Here's something you can do: " + activity.act);
   Serial.println(activity.act + " is an/a " + activity.at + " type of activity");
@@ -108,7 +111,6 @@ void loop() {
 }
 
 
-
 String getIP() {
   HTTPClient theClient;
   String ipAddress;
@@ -120,13 +122,13 @@ String getIP() {
     if (httpCode == 200) {
 
       DynamicJsonBuffer jsonBuffer;
-
       String payload = theClient.getString();
       JsonObject& root = jsonBuffer.parse(payload);
       ipAddress = root["ip"].as<String>();
 
     } else {
       Serial.println("Something went wrong with connecting to the endpoint.");
+      Serial.println();
       return "error";
     }
   }
@@ -146,17 +148,19 @@ void getGeo() {
       String payload = theClient.getString();
       Serial.println("Parsing...");
       JsonObject& root = jsonBuffer.parse(payload);
+      Serial.println();
 
       // Test if parsing succeeds.
       if (!root.success()) {
         Serial.println("parseObject() failed");
         Serial.println(payload);
+        Serial.println();
         return;
       }
 
       //Some debugging lines below:
-      //      Serial.println(payload);
-      //      root.printTo(Serial);
+//            Serial.println(payload);
+//            root.printTo(Serial);
 
       //Using .dot syntax, we refer to the variable "location" which is of
       //type GeoData, and place our data into the data structure.
@@ -187,14 +191,15 @@ void getActivity(){
       Serial.println("Received HTTP payload.");
       DynamicJsonBuffer jsonBuffer;
       String payload = theClient.getString();
-      Serial.println("[HI] Parsing...");
+      Serial.println("Parsing...");
       JsonObject& root = jsonBuffer.parse(payload);
-      Serial.println(payload);
+      Serial.println();
 
       // Test if parsing succeeds.
       if (!root.success()) {
         Serial.println("parseObject() failed");
         Serial.println(payload);
+        Serial.println();
         return;
       }
 
@@ -205,8 +210,6 @@ void getActivity(){
        activity.pr = root["price"].as<String>();
        activity.lk = root["link"].as<String>();
        activity.ky = root["key"].as<String>();
-
-
       
     }
   }
